@@ -1,0 +1,69 @@
+license.h $@
+	cat $(SRC)/mesa_license.h >> $@
+	cat $(SRC)/khronos_license.h >> $@
+	cat $(SRC)/glew_head.h >> $@
+	$(BIN)/make_header.pl GLAPIENTRY GL $(GL_CORE_SPEC) >> $@
+	$(BIN)/make_header.pl GLAPIENTRY GL $(GL_EXT_SPEC) >> $@
+	echo -e "/* ------------------------------------------------------------------------- */\n\n" >> $@
+	$(BIN)/make_struct_fun.pl GLEW_FUN_EXPORT $(GL_CORE_SPEC) $(GL_EXT_SPEC) >> $@
+	$(BIN)/make_struct_var.pl GLEW_VAR_EXPORT $(GL_CORE_SPEC) $(GL_EXT_SPEC) >> $@
+	perl -e "s/GLEW_VAR_EXPORT GLboolean __GLEW_VERSION_1_2;/GLEW_VAR_EXPORT GLboolean __GLEW_VERSION_1_1;\nGLEW_VAR_EXPORT GLboolean __GLEW_VERSION_1_2;/" -pi $@
+	cat $(SRC)/glew_tail.h >> $@
+	perl -e "s/GLEW_VERSION_STRING/$(GLEW_VERSION)/g" -pi $@
+	perl -e "s/GLEW_VERSION_MAJOR_STRING/$(GLEW_MAJOR)/g" -pi $@
+	perl -e "s/GLEW_VERSION_MINOR_STRING/$(GLEW_MINOR)/g" -pi $@
+	perl -e "s/GLEW_VERSION_MICRO_STRING/$(GLEW_MICRO)/g" -pi $@
+	rm -f $@.bak
+
+$(I.DEST)/wglew.h: $(EXT)/.dummy
+	@echo "--------------------------------------------------------------------"
+	@echo "Creating wglew.h"
+	@echo "--------------------------------------------------------------------"
+	cp -f $(SRC)/glew_license.h $@
+	cat $(SRC)/khronos_license.h >> $@
+	cat $(SRC)/wglew_head.h >> $@
+	$(BIN)/make_header.pl WINAPI WGL $(WGL_EXT_SPEC) >> $@
+	cat $(SRC)/wglew_mid.h >> $@
+	$(BIN)/make_struct_fun.pl WGLEW_FUN_EXPORT $(WGL_EXT_SPEC) >> $@
+	$(BIN)/make_struct_var.pl WGLEW_VAR_EXPORT $(WGL_EXT_SPEC) >> $@
+	cat $(SRC)/wglew_tail.h >> $@
+
+$(I.DEST)/glxew.h: $(EXT)/.dummy
+	@echo "--------------------------------------------------------------------"
+	@echo "Creating glxew.h"
+	@echo "--------------------------------------------------------------------"
+	cp -f $(SRC)/glew_license.h $@
+	cat $(SRC)/mesa_license.h >> $@
+	cat $(SRC)/khronos_license.h >> $@
+	cat $(SRC)/glxew_head.h >> $@
+	$(BIN)/make_header.pl "" GLX $(GLX_CORE_SPEC) >> $@
+	$(BIN)/make_header.pl "" GLX $(GLX_EXT_SPEC) >> $@
+	cat $(SRC)/glxew_mid.h >> $@
+	$(BIN)/make_struct_fun.pl GLXEW_FUN_EXPORT $(GLX_CORE_SPEC) $(GLX_EXT_SPEC) >> $@
+	$(BIN)/make_struct_var.pl GLXEW_VAR_EXPORT $(GLX_CORE_SPEC) $(GLX_EXT_SPEC) >> $@
+	perl -e "s/GLXEW_VAR_EXPORT GLboolean __GLXEW_VERSION_1_2;/GLXEW_VAR_EXPORT GLboolean __GLXEW_VERSION_1_0;\nGLXEW_VAR_EXPORT GLboolean __GLXEW_VERSION_1_1;\nGLXEW_VAR_EXPORT GLboolean __GLXEW_VERSION_1_2;/" -pi $@
+	cat $(SRC)/glxew_tail.h >> $@
+
+$(I.DEST)/eglew.h: $(EXT)/.dummy
+	@echo "--------------------------------------------------------------------"
+	@echo "Creating eglew.h"
+	@echo "--------------------------------------------------------------------"
+	cp -f $(SRC)/glew_license.h $@
+	cat $(SRC)/mesa_license.h >> $@
+	cat $(SRC)/khronos_license.h >> $@
+	cat $(SRC)/eglew_head.h >> $@
+	$(BIN)/make_header.pl "" EGL $(EGL_CORE_SPEC) >> $@
+	$(BIN)/make_header.pl "" EGL $(EGL_EXT_SPEC) >> $@
+	cat $(SRC)/eglew_mid.h >> $@
+	$(BIN)/make_struct_fun.pl EGLEW_FUN_EXPORT $(EGL_CORE_SPEC) $(EGL_EXT_SPEC) >> $@
+	$(BIN)/make_struct_var.pl EGLEW_VAR_EXPORT $(EGL_CORE_SPEC) $(EGL_EXT_SPEC) >> $@
+	cat $(SRC)/eglew_tail.h >> $@
+
+$(S.DEST)/glew.c: $(EXT)/.dummy
+	@echo "--------------------------------------------------------------------"
+	@echo "Creating glew.c"
+	@echo "--------------------------------------------------------------------"
+	cp -f $(SRC)/glew_license.h $@
+	cat $(SRC)/glew_head.c >> $@
+	$(BIN)/make_def_fun.pl GL $(GL_CORE_SPEC) >> $@
+	$(BIN)/make_def_fun.pl GL $(GL_EX

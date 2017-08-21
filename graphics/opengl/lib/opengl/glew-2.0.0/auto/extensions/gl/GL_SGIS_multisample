@@ -1,0 +1,20 @@
+_ARB_vertex_shader
+    grep -v "GL_FLOAT" $1/GL_ARB_vertex_shader > tmp
+    mv tmp $1/GL_ARB_vertex_shader
+    perl -e 's/handle /GLhandleARB /g' -pi $1/GL_ARB_vertex_shader
+
+# fix bugs in GL_ARB_shader_objects
+    grep -v "GL_FLOAT " $1/GL_ARB_shader_objects > tmp
+    mv tmp $1/GL_ARB_shader_objects
+    grep -v "GL_INT " $1/GL_ARB_shader_objects > tmp
+    mv tmp $1/GL_ARB_shader_objects
+
+# add typedefs to GL_ARB_shader_objects
+    cat >> $1/GL_ARB_shader_objects <<EOT
+	typedef char GLcharARB
+	typedef unsigned int GLhandleARB
+EOT
+
+# add missing functions to GL_ARB_transpose_matrix
+	cat >> $1/GL_ARB_transpose_matrix <<EOT
+	void glLoadTranspose

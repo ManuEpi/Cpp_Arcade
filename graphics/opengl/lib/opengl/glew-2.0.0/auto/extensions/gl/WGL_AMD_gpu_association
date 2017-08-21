@@ -1,0 +1,32 @@
+                   # add to functions hash
+                        $functions{$name} = {
+                            rtype => $return,
+                            parms => $parms,
+                        };
+                    }
+                }
+                # reset function declaration
+                @fnc = ();
+            } elsif ($_ ne "" and $_ ne "None") {
+                # if not eof, add line to function declaration
+                push @fnc, $_
+            }
+        },
+
+        "New Tokens" => sub {
+            if (/$regex{token}/)
+            {
+                my ($name, $value) = ($1, $2);
+                # prefix with "GL_" if prefix not present
+                $name =~ s/^/GL_/ unless $name =~ /$regex{tprefix}/;
+                # Add (name, value) pair to tokens hash, unless it's taboo
+                $tokens{$name} = $value unless exists $taboo_tokens{$name};
+            }
+        },
+    );
+
+    # Some people can't read, the template clearly says "Name String_s_"
+    $proc{"Name String"} = $proc{"Name Strings"};
+
+    # Open spec file
+    open SPEC, "

@@ -1,0 +1,37 @@
+## Copyright (C) 2002-2008, Marcelo E. Magallon <mmagallo[]debian org>
+## Copyright (C) 2002-2008, Milan Ikits <milan ikits[]ieee org>
+##
+## This program is distributed under the terms and conditions of the GNU
+## General Public License Version 2 as published by the Free Software
+## Foundation or, at your option, any later version.
+
+include ../config/version
+
+#GLEW_SPLIT_SOURCE = yes
+
+SHELL = bash
+PYTHON ?= python
+
+### Use git repository for GL extension specifications
+
+GIT_CLONE  ?= git clone --branch glew https://github.com/nigels-com/glfixes.git
+
+###
+### Conventional desktop OpenGL settings
+###
+
+REGISTRY     = registry/gl/specs
+EXT          = extensions/gl
+FILTER       = filter_gl_ext.sh
+CORE         = core/gl
+REGISTRY_URL = http://www.opengl.org/registry/
+
+###
+### Experimental OpenGL ES settings
+###
+
+# REGISTRY     = registry/gles
+# EXT          = extensions/gles
+# FILTER       = filter_gles_ext.sh
+# CORE         = core/gles
+# REGISTRY_URL = 

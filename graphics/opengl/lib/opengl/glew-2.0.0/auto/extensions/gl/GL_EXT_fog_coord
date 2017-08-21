@@ -1,0 +1,22 @@
+w.h include/GL/glxew.h
+	@mkdir -p $(dir $@)
+	$(CC) -DGLEW_NO_GLU -DGLEW_STATIC $(CFLAGS) $(CFLAGS.SO) -o $@ -c $<
+
+tmp/$(SYSTEM)/default/shared/glew.o: src/glew.c include/GL/glew.h include/GL/wglew.h include/GL/glxew.h
+	@mkdir -p $(dir $@)
+	$(CC) -DGLEW_NO_GLU -DGLEW_BUILD $(CFLAGS) $(CFLAGS.SO) -o $@ -c $<
+
+# Force re-write of glew.pc, GLEW_DEST can vary
+
+.PHONY: glew.pc
+
+glew.pc: glew.pc.in
+	sed \
+		-e "s|@prefix@|$(GLEW_PREFIX)|g" \
+		-e "s|@libdir@|$(LIBDIR)|g" \
+		-e "s|@exec_prefix@|$(BINDIR)|g" \
+		-e "s|@includedir@|$(INCDIR)|g" \
+		-e "s|@version@|$(GLEW_VERSION)|g" \
+		-e "s|@cflags@||g" \
+		-e "s|@libname@|$(NAME)|g" \
+		-e "

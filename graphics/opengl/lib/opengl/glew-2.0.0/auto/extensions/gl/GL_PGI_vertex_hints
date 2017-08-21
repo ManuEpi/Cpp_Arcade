@@ -1,0 +1,32 @@
+
+
+# Distributions
+
+dist-win32:
+	$(RM) -r $(DIST_DIR)
+	mkdir -p $(DIST_DIR)
+	cp -a include $(DIST_DIR)
+	cp -a doc $(DIST_DIR)
+	cp -a *.txt $(DIST_DIR)
+	cp -a bin $(DIST_DIR)
+	cp -a lib $(DIST_DIR)
+	$(RM) -f $(DIST_DIR)/bin/*/*/*.pdb $(DIST_DIR)/bin/*/*/*.exp
+	$(RM) -f $(DIST_DIR)/bin/*/*/glewinfo-*.exe $(DIST_DIR)/bin/*/*/visualinfo-*.exe 
+	$(RM) -f $(DIST_DIR)/lib/*/*/*.pdb $(DIST_DIR)/lib/*/*/*.exp
+	$(UNIX2DOS) $(DIST_DIR)/include/GL/*.h
+	$(UNIX2DOS) $(DIST_DIR)/doc/*.txt
+	$(UNIX2DOS) $(DIST_DIR)/doc/*.html
+	$(UNIX2DOS) $(DIST_DIR)/*.txt
+	rm -f $(DIST_WIN32)
+	cd $(DIST_DIR)/.. && zip -rq9 $(DIST_WIN32) $(DIST_NAME)
+	$(RM) -r $(DIST_DIR)
+
+dist-src:
+	$(RM) -r $(DIST_DIR)
+	mkdir -p $(DIST_DIR)
+	mkdir -p $(DIST_DIR)/bin
+	mkdir -p $(DIST_DIR)/lib
+	cp -a auto $(DIST_DIR)
+	$(RM) -Rf $(DIST_DIR)/auto/registry
+	cp -a build $(DIST_DIR)
+	cp -a c

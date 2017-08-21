@@ -1,0 +1,21 @@
+_SPEC) | grep -v '\"GL_VERSION' >> $@
+	$(BIN)/make_list.pl $(GL_EXT_SPEC) >> $@
+	$(BIN)/make_list2.pl $(GL_EXT_SPEC) >> $@
+	echo -e "\n  return GLEW_OK;\n}\n" >> $@
+	echo -e "\n#if defined(GLEW_OSMESA)" >> $@
+	echo -e "\n#elif defined(GLEW_EGL)" >> $@
+	$(BIN)/make_def_fun.pl EGL $(EGL_CORE_SPEC) >> $@
+	$(BIN)/make_def_fun.pl EGL $(EGL_EXT_SPEC) >> $@
+	$(BIN)/make_def_var.pl EGL $(EGL_CORE_SPEC) >> $@
+	$(BIN)/make_def_var.pl EGL $(EGL_EXT_SPEC) >> $@
+	$(BIN)/make_init.pl EGL $(EGL_CORE_SPEC) >> $@
+	$(BIN)/make_init.pl EGL $(EGL_EXT_SPEC) >> $@
+	cat $(SRC)/glew_init_egl.c >> $@
+	$(BIN)/make_list.pl $(EGL_CORE_SPEC) >> $@
+	$(BIN)/make_list.pl $(EGL_EXT_SPEC) >> $@
+	echo -e "\n  return GLEW_OK;\n}" >> $@
+	echo -e "\n#elif defined(_WIN32)" >> $@
+	$(BIN)/make_def_fun.pl WGL $(WGL_EXT_SPEC) >> $@
+	$(BIN)/make_def_var.pl WGL $(WGL_EXT_SPEC) >> $@
+	$(BIN)/make_init.pl WGL $(WGL_EXT_SPEC) >> $@
+	cat $(SRC)/glew_init_wgl.c >> 

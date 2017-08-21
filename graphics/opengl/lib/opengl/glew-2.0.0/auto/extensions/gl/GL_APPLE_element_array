@@ -1,0 +1,22 @@
+#!/bin/bash
+##
+## Copyright (C) 2002-2008, Marcelo E. Magallon <mmagallo[]debian org>
+## Copyright (C) 2002-2008, Milan Ikits <milan ikits[]ieee org>
+##
+## This program is distributed under the terms and conditions of the GNU
+## General Public License Version 2 as published by the Free Software
+## Foundation or, at your option, any later version.
+##
+## Parameters:
+##
+##       $1: Extensions directory
+
+set -e
+
+# fix GL_NV_texture_compression_vtc
+    grep -v EXT $1/GL_NV_texture_compression_vtc > tmp
+    mv tmp $1/GL_NV_texture_compression_vtc
+
+# remove duplicates from GL_ARB_vertex_program and GL_ARB_fragment_program
+    tail -n +5 $1/GL_ARB_vertex_program > patterns
+    grep -v -F -f patterns $

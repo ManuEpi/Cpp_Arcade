@@ -1,0 +1,49 @@
+#!/usr/bin/perl
+##
+## Copyright (C) 2002-2008, Marcelo E. Magallon <mmagallo[]debian org>
+## Copyright (C) 2002-2008, Milan Ikits <milan ikits[]ieee org>
+##
+## This program is distributed under the terms and conditions of the GNU
+## General Public License Version 2 as published by the Free Software
+## Foundation or, at your option, any later version.
+
+use strict;
+use warnings;
+
+sub compile_regex
+{
+    my $regex = join('', @_);
+    return qr/$regex/
+}
+
+my @sections = (
+    "Name",
+    "Name Strings?",
+    "New Procedures and Functions",
+    "New Tokens.*",                    # Optional (GL/WGL/GLX/...) suffix
+    "Additions to Chapter.*",
+);
+
+my %typemap = (
+    bitfield => "GLbitfield",
+    boolean  => "GLboolean",
+    # fsck up in EXT_vertex_array
+    Boolean  => "GLboolean",
+    byte     => "GLbyte",
+    clampd   => "GLclampd",
+    clampf   => "GLclampf",
+    double   => "GLdouble",
+    enum     => "GLenum",
+    # Intel fsck up
+    Glenum   => "GLenum",
+    float    => "GLfloat",
+    half     => "GLhalf",
+    int      => "GLint",
+    short    => "GLshort",
+    sizei    => "GLsizei",
+    ubyte    => "GLubyte",
+    uint     => "GLuint",
+    ushort   => "GLushort",
+    DMbuffer => "void *",
+    # Nvidia video output fsck up
+    int64EXT => "GLint64EXT",
